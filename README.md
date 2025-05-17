@@ -12,7 +12,7 @@ The DSL acts as a "source of truth" that is parsed and converted into valid SQLi
     entries used by an administrative web interface.
 _____________________________________________________________________________________________
 
-Language Purpose:
+# Language Purpose:
 --------------------
 The language enables developers to define...
 
@@ -29,7 +29,7 @@ The language enables developers to define...
 ...all within a flexible syntax that’s both human-readable and machine-processable.
 _____________________________________________________________________________________________
 
-Sample DSL Input:
+# Sample DSL Input:
 ---------------------
 student "Teresa Molina" {
   id: 20568783
@@ -39,7 +39,7 @@ student "Teresa Molina" {
 }
 _____________________________________________________________________________________________
 
-What are the statements?
+# What are the statements?
 --------------------------
 The core statement is the student "..." { ... } block.
 
@@ -56,7 +56,7 @@ This block groups related data about a student. Inside, you have field assignmen
 Each of these functions like a field declaration or statement in traditional programming languages.
 _____________________________________________________________________________________________
 
-What is the environment?
+# What is the environment?
 ---------------------------
 The language affects a real-world SQLite database as its runtime environment.
 
@@ -70,7 +70,7 @@ No variables or memory contexts are updated —
     the language is designed purely to transform DSL into persistent data.
 _____________________________________________________________________________________________
 
-What are the expressions and operations?
+# What are the expressions and operations?
 ---------------------------------------------
 The language is declarative, not imperative, so expressions are minimal but include:
 
@@ -92,7 +92,7 @@ Operations performed:
 => Database inserts via SQL
 _____________________________________________________________________________________________
 
-Evaluate function (and examples)
+# Evaluate function (and examples)
 ----------------------------------
 The evaluate function is the parseAndInsertDSL() function:
 
@@ -103,7 +103,7 @@ function evaluateDSL(dslText) {
   return inserted;
 }
 
-Test Example:
+# Test Example:
 ----------------
 
 DSL Input
@@ -114,13 +114,13 @@ student "Kai Rivera" {
   isMedical: 1
 }
 
-~Expected Output~
+# Expected Output
 
     => Passed all validations
 
     => Inserted 1 row into the database
 
-Failure Example
+# Failure Example
 -----------------
 student "Fake Student" {
   id: 999
@@ -129,7 +129,7 @@ student "Fake Student" {
   isMedical: 1
 }
 
-~Output~
+# Output
 
     => Invalid stuID format
 
