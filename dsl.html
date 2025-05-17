@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Add Students via DSL</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<h2>Paste DSL from <b>template.txt</b> to Insert Students</h2>
+
+<form id="dslForm">
+  <textarea id="dslText" rows="12" placeholder='Paste DSL like:
+student "Teresa Molina" {
+  id: 20568783
+  term: 202510
+  courses: [12345, 12346]
+  isMedical: 0
+}'></textarea>
+  <button type="submit">Submit DSL</button>
+</form>
+
+<pre id="output"></pre>
+
+<script>
+  const form = document.getElementById('dslForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const dsl = document.getElementById('dslText').value;
+    const res = await fetch('/api/insert-dsl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dsl })
+    });
+    const data = await res.json();
+    document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Student Schedule Viewer</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h2>Student Schedule</h2>
+
+  <input id="stuID" placeholder="Student ID (optional)">
+  <input id="term" placeholder="Term (e.g. 202510)">
+  <label><input type="checkbox" id="med"> Medical Student</label>
+  <button onclick="loadData()">Search</button>
+
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>CRN</th>
+        <th>Term</th>
+        <th>IsMedical</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function loadData() {
+      const id = document.getElementById('stuID').value.trim();
+      const term = document.getElementById('term').value.trim();
+      const med = document.getElementById('med').checked ? '1' : '0';
+    
+      const res = await fetch(`/api/schedule?stuID=${id}&term=${term}&isMedical=${med}`);
+      const data = await res.json();
+
+      const tbody = document.querySelector('#resultTable tbody');
+      tbody.innerHTML = "";
+
+      for (const row of data) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.stuID}</td>
+          <td>${row.stuName}</td>
+          <td>${row.CRN}</td>
+          <td>${row.Term}</td>
+          <td>${row.IsMedical}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+  </script>
+</body>
+</html>

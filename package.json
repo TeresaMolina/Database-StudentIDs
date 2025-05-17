@@ -1,0 +1,19 @@
+{
+  "name": "student-web-view",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "18": "^0.0.0",
+    "express": "^5.1.0",
+    "node": "^24.0.1",
+    "sqlite3": "^5.1.7"
+  }
+}

@@ -1,0 +1,127 @@
+
+
+Box Template:
+---------------------------
+student "student name" {
+  id: 20######
+  term: 20##--
+  courses: [#####, ...]
+  isMedical: 0 || 1
+}
+
+~Rules~
+----------------------------------
+stuName: "String"
+_________________________________
+
+stuID: between 20000000 - 20999999
+_________________________________
+Valid Term Codes:
+---------------------
+Fall           |  10
+Fall Mod 1     |  13
+Fall Mod 2     |  17
+Spring         |  20
+Spring Mod 1   |  22
+Spring Mod 2   |  27
+Summer I       |  30
+Summer II      |  40
+Summer Mod 1   |  33
+Summer Mod 2   |  43
+__________________________________
+if isMedical = 1 (TRUE)
+------------------------
+SOM YR 1  | 19
+SOM YR 2  | 29
+SOM YR 3  | 39
+SOM YR 4  | 49
+__________________________________
+if isMedical = 0 (FALSE)
+  use regular term codes 
+__________________________________
+
+CFG:
+----------------------------------
+<program>    ::= { <student> }
+
+<student>    ::= "student" <quoted_string> "{" <fields> "}"
+
+<fields>     ::= <field> { <field> }
+
+<field>      ::= "id:" <number>
+              | "term:" <number>
+              | "courses:" "[" <number_list> "]"
+              | "isMedical:" <bool>
+
+<number_list>::= <number> { "," <number> }
+
+<number>     ::= <digit> { <digit> }
+<bool>       ::= "0" | "1"
+<quoted_string> ::= '"' { <character> } '"'
+_____________________________________________________________________
+Haskell Syntax:
+---------------------
+type StudentID = Int
+type CRN = Int
+type TermCode = Int
+type IsMedical = Bool
+
+data Student = Student
+  { stuName    :: String
+  , stuID      :: StudentID
+  , term       :: TermCode
+  , courses    :: [CRN]
+  , isMedical  :: IsMedical
+  } deriving (Show, Eq)
+
+type Program = [Student]
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[my sqlite code process]
+
+1. started table
+CREATE TABLE schedule (
+stuID INTEGER CHECK (stuID BETWEEN 2000000 AND 29999999),
+stuName TEXT NOT NULL,
+CRN INTEGER CHECK (length(CRN) = 5),
+Term INTEGER CHECK (length(Term) = 6),
+IsMedical INTEGER CHECK (IsMedical IN (0,1))
+);
+
+2. found out I can make rules
+ALTER TABLE schedule RENAME TO SCHEDULE_old;
+
+3. implemented rules
+CREATE TABLE schedule (
+  stuID INTEGER CHECK (length(stuID) = 8 AND stuID BETWEEN 20000000 AND 20999999),
+  stuName TEXT NOT NULL,
+  CRN INTEGER CHECK (length(CRN) = 5),
+  Term INTEGER CHECK (length(Term) = 6),
+  IsMedical INTEGER CHECK (IsMedical IN (0, 1))
+);
+
+4. created new and updated data base
+INSERT INTO schedule (stuID, stuName, CRN, Term, IsMedical)
+SELECT stuID, stuName, CRN, Term, IsMedical
+FROM schedule_old
+WHERE stuID BETWEEN 20000000 AND 20999999 AND length(stuID) = 8;
+
+5. got rid of old
+DROP TABLE schedule_old;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Resources:
+https://www.reddit.com/r/learnprogramming/comments/kjxytb/creating_your_own_programming_language/?rdt=37179
+https://stackoverflow.com/questions/809574/what-is-a-domain-specific-language-anybody-using-it-and-in-what-way
+https://andi.dev/blog/javascript-dsl/
+Dr. Tomai's Server-Side HTML generation lectures and lab assignments
+Dr. Tomai's Database and SQL lectures and lab assignments
+Dr. Tomai's JavaScript and the DOM letures and lab assignments
+https://www.sqlitetutorial.net/
+https://www.sqlitetutorial.net/sqlite-create-table/
+https://www.sqlitetutorial.net/sqlite-insert/
+https://www.sqlitetutorial.net/sqlite-delete/
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
