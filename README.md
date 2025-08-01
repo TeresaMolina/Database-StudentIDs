@@ -3,11 +3,8 @@ This is a student record management system powered by a domain-specific language
 
   --it is also a similar feature to an existing web system call WebFocus that UTRGV uses
         to search student schedules when needing a student's course information for assistance
-            with issues/questions (COLTT/U-Central);
-    --However, the creation aspect is mostly similar to Registrar's way of creating student
-        course schedules by gathering their Student Information & using special course codes
-            and term codes.
-
+            with issues/questions;
+            
 The DSL acts as a "source of truth" that is parsed and converted into valid SQLite database
     entries used by an administrative web interface.
 _____________________________________________________________________________________________
