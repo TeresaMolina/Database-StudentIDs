@@ -104,7 +104,7 @@ if (studentBlocks.length === 0) {
     { name: "Error", status: "No valid student blocks found. Check your DSL formatting." }
   ]);
 }
-//___________________________________________________________________________________________
+//__________________________________________________________________________________________
 
 //insertion code for DB
   const insert = db.prepare(`
@@ -123,7 +123,7 @@ if (studentBlocks.length === 0) {
         .split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
 
 
-//________________________________________________________________
+//_______________________________________________________________
      
 // Basic checks
 if (!/^20\d{6}$/.test(stuID)) {
@@ -190,8 +190,32 @@ term.slice(-2):
   => This returns a new string containing the last two characters of term
 */
 
-const allowedMedicalCodes = [19, 29, 39, 49];
+//School of Medicine
+      const allowedMedicalCodes = [19, 29, 39, 49];
 if (isMedical === '1' && !allowedMedicalCodes.includes(termCode)) {
+  results.push({ name, status: `Term ${term} not valid for Medical student` });
+  continue;
+}
+
+
+      for (const crn of crns) {
+        if (crn.toString().length !== 5) {
+          results.push({ name, status: `Invalid CRN: ${crn}` });
+          continue;
+        }
+const duplicate = db.prepare(`
+  SELECT 1 FROM schedule WHERE stuID = ? AND CRN = ? AND Term = ?
+`).get(stuID, crn, term);
+
+if (duplicate) {
+  results.push({ name, status: "Not Inserted (duplicate CRN for this student and term)" });
+  continue;
+}
+//------------------------------------------------------------------------------------------------
+
+//School of Podiatric Medicine
+        const allowedMedicalCodes2 = [18, 28, 38, 48];
+if (isMedical === '1' && !allowedMedicalCodes2.includes(termCode)) {
   results.push({ name, status: `Term ${term} not valid for Medical student` });
   continue;
 }
@@ -229,3 +253,4 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`~Server running at http://localhost:${PORT}~`);
 });
+
