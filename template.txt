@@ -35,6 +35,11 @@ SOM YR 1  | 19
 SOM YR 2  | 29
 SOM YR 3  | 39
 SOM YR 4  | 49
+-----------------------
+SOPM YR 1 | 18
+SOPM YR 2 | 28
+SOPM YR 3 | 38
+SOPM YR 4 | 48
 __________________________________
 if isMedical = 0 (FALSE)
   use regular term codes 
@@ -124,4 +129,5 @@ https://www.sqlitetutorial.net/sqlite-create-table/
 https://www.sqlitetutorial.net/sqlite-insert/
 https://www.sqlitetutorial.net/sqlite-delete/
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
